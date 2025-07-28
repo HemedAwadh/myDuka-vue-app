@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate explicabo ab non dolores,
+        saepe atque labore quam rerum molestiae quis iure sequi consequatur
+        in quos ipsam corrupti reiciendis nemo? Dolores?</p>
+
+
+    <!-- This is where will inject the js variable -->
+    <div id="app">
+        <span> {{ test }} </span> <br>
+        <span> {{ name }} </span>
+
+        <!-- V-IF statement -->
+        <div v-if="mydisplay">
+            My Display is shown
+
+        </div v-if="name.length < 10">
+        <span>{{name.length}}</span>
+
+
+        <!-- V For statement array -->
+            <ul>
+                <li v-for="st,index in students">
+                    {{students}}  {{index}}
+
+                </li>
+
+            </ul>
+
+            <!-- V For statement Object -->
+             <ul>
+                <li v-for="k, i in persons">
+                    {{k.name}}---{{k.location}}
+
+                </li>
+             </ul>
+
+             <!-- Methods -->
+              <button @click = "removeStudent">Remove Student</button>
+
+    </div>
+
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.16/vue.common.dev.min.js"
+        integrity="sha512-pkjiUmffb6HeivNT8s/bYxmsiDIvGxc6BUiU+cP0BmqC/KyNN7mOhB9LLP1hISkwkTYYppksC5WtDinrfLjGmQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                test: "my test",
+                name: "Doe",
+                mydisplay: true,
+                students: ["John", "Alisa", "Alex", "Awadh", "edwin"],
+                persons:[
+                    {"name": "John","location": "Mombasa"},
+                     {"name": "Herrera","location": "Nairobi"},
+                      {"name": "Mary","location": "Nakuru"}
+                ]
+            },
+            methods : {
+               removeStudent(){
+                this.students.pop();
+               }
+
+            } 
+
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Form</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <form @submit.prevent="makeSale">
+      <select v-model="pid">
+        <option v-for="(prod, ind) in products" :value="prod.id">
+          {{ prod.name }}
+        </option>
+      </select>
+
+      <input type="number" v-model="quantity" placeholder="Quantity">
+
+      <button type="submit">Make Sale</button>
+    </form>
+
+    <p>Selected Product ID: {{ pid }}</p>
+
+    <!-- Populate sales from Flask API -->
+    <table border="1" cellpadding="5">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>PID</th>
+          <th>Quantity</th>
+          <th>Created at</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="sale in sales" :key="sale.id">
+          <td>{{ sale.id }}</td>
+          <td>{{ sale.pid }}</td>
+          <td>{{ sale.quantity }}</td>
+          <td>{{ sale.created_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.16/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.0/axios.min.js"></script>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        products: [],
+        sales: [],
+        pid: '',
+        quantity: ''
+      },
+      methods: {
+        getProducts() {
+          const token = localStorage.getItem('token');
+          const headers = { Authorization: 'Bearer ' + token };
+
+          axios.get('http://127.0.0.1:5000/api/products', { headers })
+            .then(res => {
+              this.products = res.data;
+            })
+            .catch(err => {
+              console.error("Failed to load products:", err);
+            });
+        },
+        getSales() {
+          axios.get('http://127.0.0.1:5000/api/sales')
+            .then(res => {
+              this.sales = res.data;
+            })
+            .catch(err => {
+              console.error("Failed to load sales:", err);
+            });
+        },
+        makeSale() {
+          const token = localStorage.getItem('token');
+          const headers = { Authorization: 'Bearer ' + token };
+
+          const payload = {
+            pid: this.pid,
+            quantity: this.quantity
+          };
+
+          axios.post('http://127.0.0.1:5000/api/sales', payload, { headers })
+            .then(res => {
+              alert("Sale created successfully!");
+              this.getSales(); // refresh sales table
+              this.quantity = '';
+            })
+            .catch(err => {
+              console.error("Failed to make sale:", err);
+              alert("Error creating sale.");
+            });
+        }
+      },
+      mounted() {
+        this.getProducts();
+        this.getSales();
+      }
+    });
+  </script>
+</body>
+
+</html>
