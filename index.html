@@ -1,180 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sales Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home - MyDuka</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    /* Page background */
+    body {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+    }
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+    }
 
-  <!-- Vue.js -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+    /* Titles */
+    h1, h5 {
+      color: #6a11cb;
+      font-weight: bold;
+    }
 
-  <!-- Vue Router -->
-  <script src="https://cdn.jsdelivr.net/npm/vue-router@3.5.4/dist/vue-router.min.js"></script>
+    /* Card styling */
+    .card {
+      border-radius: 15px;
+      border: none;
+      background-color: #ffffff;
+      transition: transform 0.2s ease-in-out;
+    }
 
-  <!-- Axios -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    footer small {
+      color: #f0f0f0;
+    }
+  </style>
 </head>
 
 <body>
-<div id="app">
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <a class="navbar-brand" href="#">SalesApp</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <router-link to="/" class="nav-link">Home</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="api/sales" class="nav-link">Sales</router-link>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <div id="app">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid position-relative">
 
-  <!-- Page Content -->
-  <div class="container mt-4">
-    <router-view></router-view>
-  </div>
-</div>
+        <a class="navbar-brand fw-bold text-white" href="#">MyDuka</a>
 
-<script>
-  // Home Page Component
-  const Home = {
-    template: `
-      <div class="text-center py-5">
-        <h1 class="text-primary mb-3">👋 Welcome to the Sales App</h1>
-        <p class="lead mb-4">Track and manage your product sales effortlessly.</p>
-        <button class="btn btn-outline-primary btn-lg" @click="$router.push('api/sales')">
-          Go to Sales Dashboard →
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          style="border-color: white;">
+          <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
         </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <!-- Centered Links -->
+          <ul class="navbar-nav position-absolute top-50 start-50 translate-middle">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="index.html">Home</a>
+            </li>
+            <template v-if="!loggedIn">
+              <li class="nav-item mx-2">
+                <a class="nav-link text-white" href="register.html">Register</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link text-white" href="login.html">Login</a>
+              </li>
+            </template>
+            <template v-if="loggedIn">
+              <li class="nav-item"><a class="nav-link text-white" href="products.html">Products</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="sales.html">Sales</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="dashboard.html">Dashboard</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="payments.html">Payments</a></li>
+            </template>
+          </ul>
+
+          <!-- Logout -->
+          <ul class="navbar-nav ms-auto" v-if="loggedIn" style="position: static;">
+            <li class="nav-item">
+              <button @click="logout" class="nav-link text-white">Logout</button>
+            </li>
+          </ul>
+        </div>
+
       </div>
-    `
-  };
+    </nav>
 
-  // Sales Page Component
-  const Sales = {
-    template: `
-      <div>
-        <h2 class="mb-4">📈 Record a Sale</h2>
-        <div class="row">
-          <!-- Form -->
-          <div class="col-md-4">
-            <form @submit.prevent="makeSale" class="card p-3 shadow-sm">
-              <div class="mb-3">
-                <label class="form-label">Select Product</label>
-                <select v-model="pid" class="form-select" required>
-                  <option disabled value="">-- Select Product --</option>
-                  <option v-for="p in products" :value="p.id">{{ p.name }}</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Quantity</label>
-                <input type="number" v-model="quantity" class="form-control" required min="1">
-              </div>
-              <button type="submit" class="btn btn-success w-100">Submit Sale</button>
-            </form>
+    <!-- Landing Content -->
+    <div class="container mt-5 text-center">
+      <h1 class="mb-4">Welcome to MyDuka</h1>
+      <p class="lead mb-5">
+        MyDuka helps you manage inventory and track sales performance efficiently.
+      </p>
+
+      <div class="row justify-content-center">
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">Product Management</h5>
+              <p class="card-text">Easily view, add, and update product details including prices and stock
+                levels.</p>
+            </div>
           </div>
+        </div>
 
-          <!-- Sales Table -->
-          <div class="col-md-8">
-            <div class="card shadow-sm p-3">
-              <h4 class="mb-3">Sales Records</h4>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(sale, index) in sales" :key="sale.id">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ getProductName(sale.pid) }}</td>
-                    <td>{{ sale.quantity }}</td>
-                    <td>{{ formatDate(sale.created_at) }}</td>
-                  </tr>
-                </tbody>
-              </table>
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">Sales Tracking</h5>
+              <p class="card-text">Monitor sales performance, quantities sold, and trends over time.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">Dashboard Overview</h5>
+              <p class="card-text">Get a quick snapshot of your inventory and business health in one
+                place.</p>
             </div>
           </div>
         </div>
       </div>
-    `,
-    data() {
-      return {
-        products: [],
-        sales: [],
-        pid: '',
-        quantity: ''
-      };
-    },
-    methods: {
-      getProducts() {
-        const token = localStorage.getItem('token');
-        const headers = token ? { Authorization: 'Bearer ' + token } : {};
+    </div>
 
-        axios.get('http://127.0.0.1:5000/api/products', { headers })
-          .then(res => this.products = res.data)
-          .catch(err => console.error("Failed to load products:", err));
-      },
-      getSales() {
-        axios.get('http://127.0.0.1:5000/api/sales')
-          .then(res => this.sales = res.data)
-          .catch(err => console.error("Failed to load sales:", err));
-      },
-      makeSale() {
-        const token = localStorage.getItem('token');
-        const headers = token ? { Authorization: 'Bearer ' + token } : {};
+    <!-- Footer -->
+    <footer class="text-white text-center py-3">
+      <div class="container">
+        <small>&copy; 2025 MyDuka. All rights reserved.</small>
+      </div>
+    </footer>
 
-        const payload = {
-          pid: this.pid,
-          quantity: this.quantity
-        };
+  </div>
 
-        axios.post('http://127.0.0.1:5000/api/sales', payload, { headers })
-          .then(() => {
-            alert("✅ Sale created successfully!");
-            this.getSales();
-            this.quantity = '';
-          })
-          .catch(err => {
-            console.error("Failed to make sale:", err);
-            alert("❌ Error creating sale.");
-          });
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        loggedIn: false
       },
-      getProductName(pid) {
-        const product = this.products.find(p => p.id === pid);
-        return product ? product.name : 'Unknown';
+      mounted() {
+        this.loggedIn = !!localStorage.getItem("token");
       },
-      formatDate(dateStr) {
-        return new Date(dateStr).toLocaleString();
+      methods: {
+        logout() {
+          localStorage.removeItem("token");
+          this.loggedIn = false;
+          window.location.href = "login.html";
+        }
       }
-    },
-    mounted() {
-      this.getProducts();
-      this.getSales();
-    }
-  };
-
-  // Vue Router Configuration
-  const routes = [
-    { path: '/', component: Home },
-    { path: 'api/sales', component: Sales }
-  ];
-
-  const router = new VueRouter({ routes });
-
-  // Root Vue App
-  new Vue({
-    el: '#app',
-    router
-  });
-</script>
+    });
+  </script>
 </body>
+
 </html>
