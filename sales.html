@@ -263,7 +263,7 @@
 
                 getProducts() {
                     this.loading = true;
-                    axios.get('http://127.0.0.1:5000/api/products', {
+                    axios.get('http://134.122.77.73:5000/api/products', {
                         headers: { Authorization: 'Bearer ' + localStorage.getItem("token") }
                     })
                         .then(result => {
@@ -279,7 +279,7 @@
                         return;
                     }
 
-                    axios.post('http://127.0.0.1:5000/api/sales', {
+                    axios.post('http://134.122.77.73:5000/api/sales', {
                         pid: this.pid,
                         quantity: this.quantity
                     }, {
@@ -308,7 +308,7 @@
 
                 getSales() {
                     this.loading = true;
-                    axios.get('http://127.0.0.1:5000/api/sales', {
+                    axios.get('http://134.122.77.73:5000/api/sales', {
                         headers: { Authorization: 'Bearer ' + localStorage.getItem("token") }
                     })
                         .then(result => {
@@ -335,7 +335,7 @@
 
                 gettrans_code() {
                     this.loading = true;
-                    axios.get(`http://127.0.0.1:5000/api/checker/${this.paymentData.sale_id}`, {
+                    axios.get(`http://134.122.77.73:5000/api/checker/${this.paymentData.sale_id}`, {
                         headers: { Authorization: 'Bearer ' + localStorage.getItem("token") }
                     })
                         .then(result => {
@@ -369,7 +369,7 @@
                         headers: { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
                     };
 
-                    axios.post('http://127.0.0.1:5000/api/stkpush', payload, myheader)
+                    axios.post('http://134.122.77.73:5000/api/stkpush', payload, myheader)
                         .then(() => {
                             this.paymentSuccess = "Payment initiated successfully!";
                             this.paymentError = '';
