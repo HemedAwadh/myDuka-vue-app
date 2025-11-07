@@ -117,13 +117,14 @@
                 password: '',
                 message: '',
                 success: false,
-                loading: false
+                loading: false,
+                url: 'https://api.mydukaapp.co.ke'
             },
             methods: {
                 loginUser() {
                     this.loading = true;
                     this.message = '';
-                    axios.post('http://127.0.0.1:8000/login', {
+                    axios.post(this.url + '/login', {
                         email: this.email,
                         password: this.password
                     })

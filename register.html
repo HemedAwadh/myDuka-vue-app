@@ -121,14 +121,15 @@
                 password: '',
                 message: '',
                 success: false,
-                loading: false
+                loading: false,
+                url: 'https://api.mydukaapp.co.ke'
             },
             methods: {
                 registerUser() {
                     this.loading = true;
                     this.message = '';
 
-                    axios.post('http://127.0.0.1:8000/register', {
+                    axios.post(this.url + '/register', {
                         full_name: this.full_name,
                         email: this.email,
                         password: this.password

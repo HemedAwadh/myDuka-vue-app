@@ -252,7 +252,8 @@
                     phone_number: ''
                 },
                 paymentSuccess: '',
-                paymentError: ''
+                paymentError: '',
+                url: 'https://api.mydukaapp.co.ke'
             },
 
             methods: {
@@ -263,7 +264,7 @@
 
                 getProducts() {
                     this.loading = true;
-                    axios.get('http://134.122.77.73:5000/api/products', {
+                    axios.get(this.url +'/api/products', {
                         headers: { Authorization: 'Bearer ' + localStorage.getItem("token") }
                     })
                         .then(result => {
@@ -279,7 +280,7 @@
                         return;
                     }
 
-                    axios.post('http://134.122.77.73:5000/api/sales', {
+                    axios.post(this.url +'/api/sales', {
                         pid: this.pid,
                         quantity: this.quantity
                     }, {
@@ -308,7 +309,7 @@
 
                 getSales() {
                     this.loading = true;
-                    axios.get('http://134.122.77.73:5000/api/sales', {
+                    axios.get(this.url +'/api/sales', {
                         headers: { Authorization: 'Bearer ' + localStorage.getItem("token") }
                     })
                         .then(result => {
@@ -335,7 +336,7 @@
 
                 gettrans_code() {
                     this.loading = true;
-                    axios.get(`http://134.122.77.73:5000/api/checker/${this.paymentData.sale_id}`, {
+                    axios.get(this.url +`/api/checker/${this.paymentData.sale_id}`, {
                         headers: { Authorization: 'Bearer ' + localStorage.getItem("token") }
                     })
                         .then(result => {
@@ -369,7 +370,7 @@
                         headers: { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
                     };
 
-                    axios.post('http://134.122.77.73:5000/api/stkpush', payload, myheader)
+                    axios.post(this.url +'/api/stkpush', payload, myheader)
                         .then(() => {
                             this.paymentSuccess = "Payment initiated successfully!";
                             this.paymentError = '';

@@ -125,13 +125,14 @@
                 message: "",
                 textcolor: "black",
                 loading: false,
-                loggedIn: false
+                loggedIn: false,
+                url: 'https://api.mydukaapp.co.ke'
             },
             methods: {
                 getPayments() {
                     this.loading = true;
                     const headers = { headers: { 'Authorization': 'Bearer ' + localStorage.getItem("token") } };
-                    axios.get('http://127.0.0.1:8000/api/payments', headers)
+                    axios.get(this.url + '/api/payments', headers)
                         .then(result => {
                             this.payments = result.data;
                             this.$nextTick(() => {
