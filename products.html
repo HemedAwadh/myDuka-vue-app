@@ -206,7 +206,7 @@
           const myheader = {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
           };
-          axios.get('http://134.122.77.73:5000/api/products', myheader)
+          axios.get('http://127.0.0.1:8000/api/products', myheader)
             .then(result => {
               this.products = result.data;
               this.$nextTick(() => {
@@ -228,7 +228,7 @@
           this.loading = true;
           const data = { name: this.name, buying_price: this.buying_price, selling_price: this.selling_price };
           const myheader = { headers: { 'Authorization': 'Bearer ' + localStorage.getItem("token") } };
-          axios.post('http://134.122.77.73:5000/api/products', data, myheader)
+          axios.post('http://127.0.0.1:8000/api/products', data, myheader)
             .then(() => {
               this.textcolor = "green";
               this.message = "Product added successfully!";
